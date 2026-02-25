@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONNA Online TV - Xem Phim & Truyền Hình Trực Tuyến</title>
+
+<style>
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:black;
+color:white;
+font-family:Arial;
+}
+
+/* HEADER */
+
+header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:12px;
+
+background:black;
+
+position:relative;
+z-index:1000;
+
+}
+
+.icon{
+width:26px;
+height:26px;
+cursor:pointer;
+}
+
+.logo{
+height:30px;
+}
+
+/* MENU BOX */
+
+.menu-box{
+
+position:fixed;
+
+top:60px;
+left:10px;
+
+width:260px;
+
+background:#0f2236;
+
+border-radius:12px;
+
+display:none;
+
+z-index:2000;
+
+overflow:hidden;
+
+}
+
+.menu-item{
+
+padding:14px;
+
+border-bottom:1px solid rgba(255,255,255,0.1);
+
+cursor:pointer;
+
+}
+
+.menu-item:hover{
+
+background:rgba(255,255,255,0.1);
+
+}
+
+/* SEARCH */
+
+.search{
+
+position:fixed;
+
+top:60px;
+left:0;
+right:0;
+
+background:#111;
+
+display:none;
+
+padding:10px;
+
+z-index:1500;
+
+}
+
+.search input{
+
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+
+}
+
+.result{
+
+display:flex;
+align-items:center;
+
+gap:10px;
+
+padding:10px;
+
+border-bottom:1px solid #222;
+
+cursor:pointer;
+
+}
+
+.result img{
+
+width:50px;
+height:70px;
+object-fit:cover;
+border-radius:6px;
+
+}
+
+/* SLIDER */
+
+.slider{
+
+width:100%;
+
+overflow:hidden;
+
+margin-top:10px;
+
+}
+
+.slides{
+
+display:flex;
+
+transition:transform 0.5s ease;
+
+}
+
+.slide{
+
+min-width:100%;
+
+flex-shrink:0;
+
+position:relative;
+
+}
+
+.slide img{
+
+width:100%;
+
+height:230px;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+/* OVERLAY */
+
+.overlay{
+
+position:absolute;
+
+bottom:0;
+left:0;
+right:0;
+
+padding:14px;
+
+background:linear-gradient(
+transparent,
+rgba(0,0,0,0.9)
+);
+
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+
+gap:6px;
+
+}
+
+.overlay h2{
+
+font-size:18px;
+
+}
+
+/* WATCH BUTTON */
+
+.watch-btn{
+
+display:inline-flex;
+align-items:center;
+
+gap:6px;
+
+background:#3ddc97;
+
+color:white;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-size:13px;
+
+cursor:pointer;
+
+}
+
+.watch-btn img{
+
+width:14px;
+height:14px;
+
+}
+
+</style>
+</head>
+<body>
+
+
+<header>
+
+<img id="menuBtn"
+src="/images/menu.png"
+class="icon"
+onclick="toggleMenu()">
+
+<img src="/images/logo.png"
+class="logo">
+
+<img src="/images/search.png"
+class="icon"
+onclick="toggleSearch()">
+
+</header>
+
+
+<!-- MENU -->
+
+<div class="menu-box"
+id="menu">
+
+<div class="menu-item"
+onclick="goPage('/thanhvien.html')">
+👤 Thành viên
+</div>
+
+<div class="menu-item"
+onclick="goPage('/chude.html')">
+Chủ đề
+</div>
+
+<div class="menu-item"
+onclick="goPage('/theloai.html')">
+Thể loại
+</div>
+
+<div class="menu-item"
+onclick="goPage('/quocgia.html')">
+Quốc gia
+</div>
+
+<div class="menu-item"
+onclick="goPage('/phimle.html')">
+Phim lẻ
+</div>
+
+<div class="menu-item"
+onclick="goPage('/phimbo.html')">
+Phim bộ
+</div>
+
+<div class="menu-item"
+onclick="goPage('/tvshows.html')">
+TV Shows
+</div>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="search"
+id="searchBox">
+
+<input
+type="text"
+placeholder="Tìm phim..."
+oninput="searchFilm(this.value)"
+>
+
+<div id="results"></div>
+
+</div>
+
+
+<!-- SLIDER -->
+
+<div class="slider">
+
+<div class="slides"
+id="slides">
+
+
+<div class="slide">
+
+<img src="/images/banner1.jpg">
+
+<div class="overlay">
+
+<h2>Xì Trum 2</h2>
+
+<div class="watch-btn"
+onclick="location.href='/phim/oshinoko.html'">
+
+<img src="/images/play.png">
+Xem ngay
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="slide">
+
+<img src="/images/banner2.jpg">
+
+<div class="overlay">
+
+<h2>Phim khác</h2>
+
+<div class="watch-btn"
+onclick="location.href='/phim/helo.html'">
+
+<img src="/images/play.png">
+Xem ngay
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="slide">
+
+<img src="/images/banner3.jpg">
+
+<div class="overlay">
+
+<h2>Phim mới</h2>
+
+<div class="watch-btn"
+onclick="location.href='/phim/new.html'">
+
+<img src="/images/play.png">
+Xem ngay
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+
+<script>
+
+/* MENU */
+
+let menuOpen=false;
+
+function toggleMenu(){
+
+let menu=document.getElementById("menu");
+
+let btn=document.getElementById("menuBtn");
+
+menuOpen=!menuOpen;
+
+menu.style.display=
+menuOpen?"block":"none";
+
+btn.src=
+menuOpen?"/images/dong.png":"/images/menu.png";
+
+}
+
+
+/* GO PAGE */
+
+function goPage(url){
+
+location.href=url;
+
+}
+
+
+/* SEARCH */
+
+function toggleSearch(){
+
+let s=document.getElementById("searchBox");
+
+s.style.display=
+s.style.display=="block"
+?"none":"block";
+
+}
+
+
+/* LOAD FILMS */
+
+let films=[];
+
+fetch("/phim/index.json")
+
+.then(r=>r.json())
+
+.then(data=>films=data);
+
+
+/* SEARCH FILM */
+
+function searchFilm(text){
+
+let results=
+document.getElementById("results");
+
+results.innerHTML="";
+
+films.forEach(file=>{
+
+let title=file
+.replace(".html","")
+.replaceAll("-"," ");
+
+if(title.toLowerCase()
+.includes(text.toLowerCase())){
+
+results.innerHTML+=`
+
+<div class="result"
+onclick="location.href='/phim/${file}'">
+
+<img src="/phim/${file.replace('.html','.jpg')}">
+
+${title}
+
+</div>
+
+`;
+
+}
+
+});
+
+}
+
+
+/* SLIDER */
+
+const slides =
+document.getElementById("slides");
+
+const totalSlides =
+slides.children.length;
+
+let index = 0;
+
+
+/* AUTO SLIDE LEFT */
+
+setInterval(()=>{
+
+index++;
+
+if(index>=totalSlides)
+index=0;
+
+updateSlide();
+
+},6000);
+
+
+function updateSlide(){
+
+slides.style.transform =
+"translateX(-"+(index*100)+"%)";
+
+}
+
+
+/* TOUCH */
+
+let startX=0;
+
+slides.addEventListener("touchstart", e=>{
+
+startX=e.touches[0].clientX;
+
+});
+
+slides.addEventListener("touchend", e=>{
+
+let endX=e.changedTouches[0].clientX;
+
+if(startX-endX>50) index++;
+
+if(endX-startX>50) index--;
+
+if(index<0) index=0;
+
+if(index>=totalSlides)
+index=totalSlides-1;
+
+updateSlide();
+
+});
+
+</script>
+
+
+</body>
+</html>
