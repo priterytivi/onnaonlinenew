@@ -555,7 +555,160 @@ updateSlide();
 });
 
 </script>
+    <style>
+        /* Toàn bộ nền đen tuyệt đối */
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
+        /* --- PHẦN TIÊU ĐỀ MỚI THÊM --- */
+        .section-header {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: inline-block; /* Để đường gạch ngang chỉ dài bằng chữ */
+        }
+
+        .mint-line {
+            height: 3px;
+            width: 60px; /* Độ dài của gạch ngang */
+            background-color: #3EB489; /* Màu Xanh Bạc Hà (Mint Green) */
+            border-radius: 2px;
+        }
+
+        /* --- GRID PHIM --- */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+            gap: 15px;
+        }
+
+        .movie-item {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            aspect-ratio: 2 / 3;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-item:hover {
+            transform: scale(1.03);
+        }
+
+        .movie-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .movie-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 25px 10px 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            text-align: center;
+        }
+
+        .movie-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Điều chỉnh hiển thị 4 cột trên PC */
+        @media (min-width: 800px) {
+            .movie-grid {
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 20px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .movie-name {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="section-header">
+        <div class="section-title">Phim mới nhất</div>
+        <div class="mint-line"></div>
+    </div>
+
+    <div class="movie-grid">
+        
+        <a href="link-phim-1" class="movie-item">
+            <span class="badge">Vietsub+Lồng tiếng HD</span>
+            <img src="https://image.tmdb.org/t/p/w500/u699S2dnS996Y7vovvX99YpS6Yv.jpg">
+            <div class="movie-info">
+                <p class="movie-name">Elio: Cậu Bé Đến Từ Trái Đất</p>
+            </div>
+        </a>
+
+        <a href="link-phim-2" class="movie-item">
+            <span class="badge">Vietsub+Lồng tiếng CAM</span>
+            <img src="https://image.tmdb.org/t/p/w500/yAInLhN036eG7P7jU83jP1T7YfN.jpg">
+            <div class="movie-info">
+                <p class="movie-name">Doraemon Movie 44: Nobita Và Cuộc Phiêu Lưu</p>
+            </div>
+        </a>
+
+        <a href="link-phim-3" class="movie-item">
+            <span class="badge">Lồng tiếng FHD</span>
+            <img src="https://image.tmdb.org/t/p/w500/8S67T8NlKjD1N1fR4m1pM0E0XvL.jpg">
+            <div class="movie-info">
+                <p class="movie-name">Cậu Bé Cá Heo</p>
+            </div>
+        </a>
+
+        <a href="link-phim-4" class="movie-item">
+            <span class="badge">Lồng tiếng FHD</span>
+            <img src="https://image.tmdb.org/t/p/w500/pB8LzSwa9v9GZBM9pI7S99uS0S5.jpg">
+            <div class="movie-info">
+                <p class="movie-name">About Family: Chuyện Nhà Bánh Xếp</p>
+            </div>
+        </a>
+        
 </body>
-</html>
+    </html>
+      
