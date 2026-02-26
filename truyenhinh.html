@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truyền hình</title>
+
+<style>
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:black;
+color:white;
+font-family:Arial;
+}
+
+/* HEADER */
+
+header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:12px;
+
+background:black;
+
+position:relative;
+z-index:1000;
+
+}
+
+.icon{
+width:26px;
+height:26px;
+cursor:pointer;
+}
+
+.logo{
+height:30px;
+}
+
+/* MENU BOX */
+
+.menu-box{
+
+position:fixed;
+
+top:60px;
+left:10px;
+
+width:260px;
+
+background:#0f2236;
+
+border-radius:12px;
+
+display:none;
+
+z-index:2000;
+
+overflow:hidden;
+
+}
+
+.menu-item{
+
+padding:14px;
+
+border-bottom:1px solid rgba(255,255,255,0.1);
+
+cursor:pointer;
+
+}
+
+.menu-item:hover{
+
+background:rgba(255,255,255,0.1);
+
+}
+
+/* SEARCH */
+
+.search{
+
+position:fixed;
+
+top:60px;
+left:0;
+right:0;
+
+background:#111;
+
+display:none;
+
+padding:10px;
+
+z-index:1500;
+
+}
+
+.search input{
+
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+
+}
+
+.result{
+
+display:flex;
+align-items:center;
+
+gap:10px;
+
+padding:10px;
+
+border-bottom:1px solid #222;
+
+cursor:pointer;
+
+}
+
+.result img{
+
+width:50px;
+height:70px;
+object-fit:cover;
+border-radius:6px;
+
+}
+
+/* SLIDER */
+
+.slider{
+
+width:100%;
+
+overflow:hidden;
+
+margin-top:10px;
+
+}
+
+.slides{
+
+display:flex;
+
+transition:transform 0.5s ease;
+
+}
+
+.slide{
+
+min-width:100%;
+
+flex-shrink:0;
+
+position:relative;
+
+}
+
+.slide img{
+
+width:100%;
+
+height:230px;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+/* OVERLAY */
+
+.overlay{
+
+position:absolute;
+
+bottom:0;
+left:0;
+right:0;
+
+padding:14px;
+
+background:linear-gradient(
+transparent,
+rgba(0,0,0,0.9)
+);
+
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+
+gap:6px;
+
+}
+
+.overlay h2{
+
+font-size:18px;
+
+}
+
+/* WATCH BUTTON */
+
+.watch-btn{
+
+display:inline-flex;
+align-items:center;
+
+gap:6px;
+
+background:#3ddc97;
+
+color:white;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-size:13px;
+
+cursor:pointer;
+
+}
+
+.watch-btn img{
+
+width:14px;
+height:14px;
+
+}
+
+</style>
+</head>
+<body>
+
+
+<header>
+
+<img id="menuBtn"
+src="/logo/menu.png"
+class="icon"
+onclick="toggleMenu()">
+
+<img src="/logo/logo.png"
+class="logo">
+
+<img src="/logo/search.png"
+class="icon"
+onclick="toggleSearch()">
+
+</header>
+
+
+<!-- MENU -->
+
+<div class="menu-box"
+id="menu">
+
+<div class="menu-item"
+onclick="goPage('/index.html')">
+Trang chủ
+</div>
+
+<div class="menu-item"
+onclick="goPage('/truyenhinh.html')">
+Truyền hình
+</div>
+
+<div class="menu-item"
+onclick="goPage('/phimanh.html')">
+Phim ảnh
+</div>
+
+<div class="menu-item"
+onclick="goPage('/gioithieu.html')">
+Giới thiệu
+</div>
+
+<div class="menu-item"
+onclick="goPage('/dieukhoan.html')">
+Điều khoản
+</div>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="search"
+id="searchBox">
+
+<input
+type="text"
+placeholder="Tìm phim..."
+oninput="searchFilm(this.value)"
+>
+
+<div id="results"></div>
+
+</div>
+
+
+<!-- SLIDER -->
+
+<div class="slider">
+
+<div class="slides"
+id="slides">
+
+
+
+<script>
+
+/* MENU */
+
+let menuOpen=false;
+
+function toggleMenu(){
+
+let menu=document.getElementById("menu");
+
+let btn=document.getElementById("menuBtn");
+
+menuOpen=!menuOpen;
+
+menu.style.display=
+menuOpen?"block":"none";
+
+btn.src=
+menuOpen?"/logo/dong.png":"/logo/menu.png";
+
+}
+
+
+/* GO PAGE */
+
+function goPage(url){
+
+location.href=url;
+
+}
+
+
+/* SEARCH */
+
+function toggleSearch(){
+
+let s=document.getElementById("searchBox");
+
+s.style.display=
+s.style.display=="block"
+?"none":"block";
+
+}
+
+
+/* LOAD FILMS */
+
+let films=[];
+
+fetch("/phim/index.json")
+
+.then(r=>r.json())
+
+.then(data=>films=data);
+
+
+/* SEARCH FILM */
+
+function searchFilm(text){
+
+let results=
+document.getElementById("results");
+
+results.innerHTML="";
+
+films.forEach(file=>{
+
+let title=file
+.replace(".html","")
+.replaceAll("-"," ");
+
+if(title.toLowerCase()
+.includes(text.toLowerCase())){
+
+results.innerHTML+=`
+
+<div class="result"
+onclick="location.href='/phim/${file}'">
+
+<img src="/phim/${file.replace('.html','.jpg')}">
+
+${title}
+
+</div>
+
+`;
+
+}
+
+});
+
+}
+
+
+/* SLIDER */
+
+const slides =
+document.getElementById("slides");
+
+const totalSlides =
+slides.children.length;
+
+let index = 0;
+
+
+/* AUTO SLIDE LEFT */
+
+setInterval(()=>{
+
+index++;
+
+if(index>=totalSlides)
+index=0;
+
+updateSlide();
+
+},6000);
+
+
+function updateSlide(){
+
+slides.style.transform =
+"translateX(-"+(index*100)+"%)";
+
+}
+
+
+/* TOUCH */
+
+let startX=0;
+
+slides.addEventListener("touchstart", e=>{
+
+startX=e.touches[0].clientX;
+
+});
+
+slides.addEventListener("touchend", e=>{
+
+let endX=e.changedTouches[0].clientX;
+
+if(startX-endX>50) index++;
+
+if(endX-startX>50) index--;
+
+if(index<0) index=0;
+
+if(index>=totalSlides)
+index=totalSlides-1;
+
+updateSlide();
+
+});
+
+
+</script>
+    <style>
+        
+        /* --- PHẦN TIÊU ĐỀ MỚI THÊM --- */
+        .section-header {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: inline-block; /* Để đường gạch ngang chỉ dài bằng chữ */
+        }
+
+        .mint-line {
+            height: 3px;
+            width: 100px; /* Độ dài của gạch ngang */
+            background-color: #3EB489; /* Màu Xanh Bạc Hà (Mint Green) */
+            border-radius: 2px;
+        }
+
+        /* --- GRID PHIM --- */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+            gap: 10px;
+        }
+
+        .movie-item {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            aspect-ratio: 2 / 3;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-item:hover {
+            transform: scale(1.03);
+        }
+
+        .movie-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .movie-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 25px 10px 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            text-align: center;
+        }
+
+        .movie-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Điều chỉnh hiển thị 4 cột trên PC */
+        @media (min-width: 800px) {
+            .movie-grid {
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 20px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .movie-name {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+  
+<script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+
+<style>
+
+body{
+    margin:0;
+    background:#0b0b0f;
+    font-family:Arial;
+    color:white;
+}
+
+/* Player */
+.player-wrapper{
+    width:100%;
+    aspect-ratio:16/9;
+    background:black;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+
+/* Search container */
+.search-container{
+    padding:12px;
+    display:flex;
+    justify-content:center;
+}
+
+/* Search input */
+.search-container input{
+
+    width:100%;
+    max-width:500px;
+
+    padding:12px 16px;
+
+    border-radius:14px;
+    border:none;
+
+    background:#1a1a22;
+    color:white;
+
+    font-size:16px;
+
+    outline:none;
+
+    box-sizing:border-box;
+}
+
+
+/* Channel grid */
+.channel-grid{
+    padding:12px;
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:12px;
+}
+
+/* Desktop */
+@media(min-width:768px){
+    .channel-grid{
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+/* Channel box */
+.channel{
+
+    background:#2a2a33;
+    border-radius:16px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:0.2s;
+
+}
+
+.channel:hover{
+    background:#3a3a45;
+}
+
+.channel.active{
+    outline:2px solid #98ffd1;
+}
+
+
+/* Thumbnail */
+.channel-thumb{
+    width:100%;
+    aspect-ratio:16/9;
+    background:#3a3a3a;
+}
+
+.channel-thumb img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+}
+
+
+/* Channel name */
+.channel-name{
+    padding:8px;
+    font-size:14px;
+    text-align:center;
+}
+
+</style>
+</head>
+<body>
+
+
+<!-- Player -->
+<div class="player-wrapper">
+<div id="player"></div>
+</div>
+
+
+<!-- Search -->
+<div class="search-container">
+<input type="text" id="search" placeholder="Find channel...">
+</div>
+
+
+<!-- Channel grid -->
+<div class="channel-grid" id="channelGrid"></div>
+
+
+
+<script>
+
+let player = jwplayer("player");
+
+player.setup({
+    file:"",
+    width:"100%",
+    height:"100%",
+    autostart:false
+});
+
+let channels=[];
+
+
+/* Load IPTV */
+fetch("https://raw.githubusercontent.com/vuminhthanh12/vuminhthanh12/refs/heads/main/vmttv")
+.then(res=>res.text())
+.then(text=>{
+    parseM3U(text);
+});
+
+
+/* Parse M3U */
+function parseM3U(data){
+
+    let lines=data.split("\n");
+
+    for(let i=0;i<lines.length;i++){
+
+        if(lines[i].startsWith("#EXTINF")){
+
+            let name=lines[i].split(",")[1] || "Unknown";
+
+            let logoMatch=lines[i].match(/tvg-logo="(.*?)"/);
+
+            let logo=logoMatch ? logoMatch[1] : "";
+
+            let url=lines[i+1];
+
+            channels.push({
+                name:name,
+                logo:logo,
+                url:url
+            });
+
+        }
+
+    }
+
+    renderChannels(channels);
+
+}
+
+
+/* Render channels */
+function renderChannels(list){
+
+    let grid=document.getElementById("channelGrid");
+
+    grid.innerHTML="";
+
+    list.forEach(ch=>{
+
+        let div=document.createElement("div");
+
+        div.className="channel";
+
+        div.innerHTML=`
+
+        <div class="channel-thumb">
+            <img src="${ch.logo}" onerror="this.style.display='none'">
+        </div>
+
+        <div class="channel-name">
+        ${ch.name}
+        </div>
+
+        `;
+
+        div.onclick=function(){
+
+            player.load({
+                file:ch.url
+            });
+
+            player.play();
+
+            document.querySelectorAll(".channel").forEach(c=>c.classList.remove("active"));
+
+            div.classList.add("active");
+
+        };
+
+        grid.appendChild(div);
+
+    });
+
+}
+
+
+/* Search function */
+document.getElementById("search").addEventListener("input",function(){
+
+    let value=this.value.toLowerCase();
+
+    let filtered=channels.filter(ch=>
+        ch.name.toLowerCase().includes(value)
+    );
+
+    renderChannels(filtered);
+
+});
+
+
+</script>
+
+</body>
+</html>
+
+<
+</body>
+    </html>
+
+      
