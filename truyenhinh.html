@@ -417,39 +417,6 @@ ${title}
 }
 
 
-/* SLIDER */
-
-const slides =
-document.getElementById("slides");
-
-const totalSlides =
-slides.children.length;
-
-let index = 0;
-
-
-/* AUTO SLIDE LEFT */
-
-setInterval(()=>{
-
-index++;
-
-if(index>=totalSlides)
-index=0;
-
-updateSlide();
-
-},6000);
-
-
-function updateSlide(){
-
-slides.style.transform =
-"translateX(-"+(index*100)+"%)";
-
-}
-
-
 /* TOUCH */
 
 let startX=0;
