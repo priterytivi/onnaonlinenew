@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWPlayer - Advertising System</title>
+    <script src="https://ssl.p.jwpcdn.com/8/jwplayer.js"></script>
+</head>
+<body style="margin:0; background-color: #000;">
+
+    <div id="player_container">Đang khởi tạo trình phát...</div>
+
+    <script type="text/javascript">
+        // 1. Hàm lấy link từ tham số ?url=
+        function getUrlParameter(name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                // Nếu không có ?url=, mặc định dùng link bạn vừa cung cấp
+                return "https://files.catbox.moe/hquinz.mp4";
+            }
+            return decodeURIComponent(results[1]) || 0;
+        }
+
+        var mainVideo = getUrlParameter('url');
+
+        // 2. Cấu hình JWPlayer
+        jwplayer("player_container").setup({
+            file: mainVideo,
+            width: "100%",
+            height: "100vh", // Full màn hình trình duyệt
+            autostart: true,
+            mute: false,
+            sharing: true,
+            advertising: {
+                client: "vast", // Chuẩn quảng cáo video phổ biến nhất
+                schedule: [
+                    {
+                        offset: "pre", // Hiện quảng cáo ngay khi nhấn Play
+                        tag: "URL_VAST_TAG_CỦA_BẠN_Ở_ĐÂY" // Thay link quảng cáo (XML) vào đây
+                    }
+                ]
+            }
+        });
+    </script>
+
+</body>
+</html>
+
