@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>JWPlayer Ads</title>
+<title>Player Ads</title>
 
 <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
 
@@ -42,7 +42,7 @@ z-index:999;
 <body>
 
 <div id="player"></div>
-<div id="skipBtn">Skip Ads (3)</div>
+<div id="skipBtn">Bỏ qua quảng cáo trong (3)</div>
 
 <script>
 
@@ -78,13 +78,13 @@ time--;
 
 if(time > 0){
 
-skipBtn.innerHTML = "Skip Ads ("+time+")";
+skipBtn.innerHTML = "Bỏ qua quảng cáo trong ("+time+")";
 
 }else{
 
 clearInterval(timer);
 
-skipBtn.innerHTML = "Skip Ads";
+skipBtn.innerHTML = "Bỏ qua quảng cáo";
 skipBtn.style.cursor="pointer";
 
 }
